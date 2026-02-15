@@ -23,6 +23,7 @@ import {
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { createEmployee } from "@/services/employee";
+import { Spinner } from "../ui/spinner";
 
 type Props = {
   refetch: () => void;
@@ -133,7 +134,12 @@ const AddEmployeeButton = ({ refetch }: Props) => {
               <DialogClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DialogClose>
-              <Button onClick={handleSubmit}>Save changes</Button>
+              <Button
+                disabled={addEmployeeMutation.isPending}
+                onClick={handleSubmit}
+              >
+                {addEmployeeMutation.isPending && <Spinner />} Save changes
+              </Button>
             </DialogFooter>
           </DialogContent>
         </form>

@@ -16,6 +16,7 @@ import { Trash2Icon } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { createEmployee, deleteEmployee } from "@/services/employee";
 import { useState } from "react";
+import { Spinner } from "../ui/spinner";
 
 type Props = {
   refetch: () => void;
@@ -26,7 +27,7 @@ const DeleteEmployeeButton = ({ refetch, id }: Props) => {
   const [open, setOpen] = useState(false);
 
   const deleteEmployeeMutation = useMutation({
-    mutationKey: ["del_employee"],
+    mutationKey: ["delete_employee"],
     mutationFn: deleteEmployee,
     onError: (error) => {
       toast.error(error.message || "Something went wrong");
@@ -39,7 +40,7 @@ const DeleteEmployeeButton = ({ refetch, id }: Props) => {
 
   return (
     <div>
-      <AlertDialog>
+      <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogTrigger asChild>
           <Button variant="destructive" size="icon">
             <Trash2Icon />
@@ -57,12 +58,15 @@ const DeleteEmployeeButton = ({ refetch, id }: Props) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
-            <AlertDialogAction
+            <Button
               variant="destructive"
+              disabled={deleteEmployeeMutation.isPending}
               onClick={() => deleteEmployeeMutation.mutate(id)}
             >
+              {" "}
+              {deleteEmployeeMutation.isPending && <Spinner />}
               Delete
-            </AlertDialogAction>
+            </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

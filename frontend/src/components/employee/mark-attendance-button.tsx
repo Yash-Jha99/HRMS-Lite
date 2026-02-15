@@ -25,6 +25,7 @@ import { useMutation } from "@tanstack/react-query";
 import { markAttendance } from "@/services/employee";
 import { DatePicker } from "../common/date-picker";
 import dayjs from "dayjs";
+import { Spinner } from "../ui/spinner";
 
 type Props = {
   refetch: () => void;
@@ -38,7 +39,7 @@ const MarkAttendanceButton = ({ refetch, employeeId }: Props) => {
   });
   const [open, setOpen] = useState(false);
 
-  const addEmployeeMutation = useMutation({
+  const markAttendanceMutation = useMutation({
     mutationKey: ["mark_new_attendance"],
     mutationFn: markAttendance,
     onError: (error) => {
@@ -59,7 +60,7 @@ const MarkAttendanceButton = ({ refetch, employeeId }: Props) => {
 
   const handleSubmit = () => {
     if (!formValues.status.trim()) return toast.error("Status cannot be empty");
-    addEmployeeMutation.mutate({
+    markAttendanceMutation.mutate({
       id: employeeId,
       status: formValues.status,
       date: dayjs(formValues.date).format("YYYY-MM-DD"),
@@ -121,7 +122,13 @@ const MarkAttendanceButton = ({ refetch, employeeId }: Props) => {
               <DialogClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DialogClose>
-              <Button onClick={handleSubmit}>Save changes</Button>
+              <Button
+                disabled={markAttendanceMutation.isPending}
+                onClick={handleSubmit}
+              >
+                {" "}
+                {markAttendanceMutation.isPending && <Spinner />} Save changes
+              </Button>
             </DialogFooter>
           </DialogContent>
         </form>
