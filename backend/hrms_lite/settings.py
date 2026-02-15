@@ -124,6 +124,8 @@ STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
+print(BASE_DIR)
+
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "utils.exception.custom_exception_handler",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
@@ -137,3 +139,25 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 STATICSTORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",  # or 'DEBUG' for even more detail
+            "propagate": True,
+        },
+        "django.request": {  # Ensure request errors are logged
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}
