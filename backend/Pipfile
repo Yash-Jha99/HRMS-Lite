@@ -15,6 +15,7 @@ dj-database-url = "*"
 psycopg2 = "*"
 django-cors-headers = "*"
 gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 

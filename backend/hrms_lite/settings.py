@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -128,5 +129,8 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
+    "https://hrms-lite-jade-delta.vercel.app",
     # other origins...
 ]
+
+STATICSTORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
